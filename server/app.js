@@ -23,6 +23,39 @@ app.get("/students", (req, res) => {
   });
 });
 
+app.patch("/students/:id", (req, res) => {
+  const { id } = req.params;
+  Student.findByIdAndUpdate(id, req.body, { new: true }).then(
+    (updatedStudent) => {
+      if (updatedStudent) {
+        res.status(200);
+        res.json(updatedStudent);
+      } else {
+        res.status(400);
+        res.json({
+          error: `Post with ${id} not found`,
+        });
+      }
+    }
+  );
+});
+
+app.delete("/students/:id", (req, res) => {
+  const { id } = req.params;
+  Student.findByIdAndDelete(id)
+    .then((student) => {
+      res.status(204);
+      res.json(student);
+      console.log(`Post with id: ${id} was deleted`);
+    })
+    .catch((error) => {
+      res.status(500);
+      res.json({
+        error: `Post with ${id} not deleted`,
+      });
+    });
+});
+
 app.get("/students", (req, res) => {
   res.json({
     "/courses": "nothing yet",
