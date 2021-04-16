@@ -1,8 +1,11 @@
 const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.json({
@@ -10,6 +13,15 @@ app.get("/", (req, res) => {
   });
 });
 
-app.listen(4000, () => {
-  console.log("Listening on http://localhost:4000");
+mongoose.connect("mongodb://localhost/course", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const mongodb = mongoose.connection;
+
+mongodb.on("open", () => {
+  app.listen(4000, () => {
+    console.log("Listening on http://localhost:4000");
+  });
 });
