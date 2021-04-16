@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   });
 });
 
-mongoose.connect("mongodb://localhost/course", {
+mongoose.connect("mongodb://localhost/bootcamp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
