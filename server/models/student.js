@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const { Schema } = mongoose;
+const { Schema, ObjectId } = mongoose;
 
 const StudentSchema = new Schema(
   {
     firstName: String,
     lastName: String,
-    course: Number,
+    courseId: { type: ObjectId, ref: "Course" },
   },
   {
     timestamps: true,
