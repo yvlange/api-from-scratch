@@ -11,17 +11,8 @@ app.use(cors());
 
 //Get all students in a single course
 app.get("/courses/:courseId/students", (req, res) => {
-  Student.find().then((students) => {
-    res.status(200);
-    res.json(students);
-  });
-});
-
-//Get a single student in a specific course
-
-app.get("/courses/:courseId/students/:studentId", (req, res) => {
-  const { id } = req.params;
-  Student.findById(id).then((students) => {
+  const { courseId } = req.params;
+  Student.find({ courseId }).then((students) => {
     res.status(200);
     res.json(students);
   });
@@ -47,13 +38,34 @@ app.get("/courses", (req, res) => {
 
 //Get a specific course
 
-app.get("/courses/:id", (req, res) => {
-  const { id } = req.params;
-  Course.findById(id).then((courses) => {
+app.get("/courses/:courseId", (req, res) => {
+  const { courseId } = req.params;
+  Course.findById(courseId).then((courses) => {
     res.status(200);
     res.json(courses);
   });
 });
+
+//Get one specific student
+
+app.get("/students/:studentId", (req, res) => {
+  const { studentId } = req.params;
+  Student.findById(studentId).then((student) => {
+    res.status(200);
+    res.json(student);
+  });
+});
+
+//Get a single student in a specific course
+
+// app.get("/courses/:courseId/students/:studentId", (req, res) => {
+//   const { courseId } = req.params;
+
+//   Student.findById({ courseId }).then((students) => {
+//     res.status(200);
+//     res.json(students);
+//   });
+// });
 
 //Post a single course
 
@@ -64,10 +76,20 @@ app.post("/courses", (req, res) => {
   });
 });
 
+//Post a single student
+
+app.post("/students", (req, res) => {
+  Student.create(req.body).then((newStudent) => {
+    res.status(201);
+    res.json(newStudent);
+  });
+});
+
 //Add a single student to a specific course
 
 app.post("/courses/:courseId/students", (req, res) => {
-  Student.create(req.body).then((newStudent) => {
+  const { courseId } = req.params;
+  Student.create({ ...req.body, courseId }).then((newStudent) => {
     res.status(201);
     res.json(newStudent);
   });
@@ -76,8 +98,8 @@ app.post("/courses/:courseId/students", (req, res) => {
 //Edit a specific course
 
 app.patch("/courses/:courseId", (req, res) => {
-  const { id } = req.params;
-  Course.findByIdAndUpdate(id, req.body, { new: true }).then(
+  const { courseId } = req.params;
+  Course.findByIdAndUpdate(courseId, req.body, { new: true }).then(
     (updatedCourse) => {
       if (updatedCourse) {
         res.status(200);
@@ -94,9 +116,9 @@ app.patch("/courses/:courseId", (req, res) => {
 
 //Edit a specific student
 
-app.patch("/students/studentId", (req, res) => {
-  const { id } = req.params;
-  Student.findByIdAndUpdate(id, req.body, { new: true }).then(
+app.patch("/students/:studentId", (req, res) => {
+  const { studentId } = req.params;
+  Student.findByIdAndUpdate(studentId, req.body, { new: true }).then(
     (updatedStudent) => {
       if (updatedStudent) {
         res.status(200);
@@ -129,20 +151,38 @@ app.delete("/courses/:courseId", (req, res) => {
     });
 });
 
-//Delete a student
+//Delete a course
 
-app.delete("/students/:studentId", (req, res) => {
-  const { id } = req.params;
-  Student.findByIdAndDelete(id)
-    .then((student) => {
+app.delete("/courses/:courseId", (req, res) => {
+  const { courseId } = req.params;
+  Course.findByIdAndDelete(courseId)
+    .then((course) => {
       res.status(204);
-      res.json(student);
-      console.log(`Post with id: ${id} was deleted`);
+      res.json(course);
+      console.log(`Post with id: ${courseId} was deleted`);
     })
     .catch((error) => {
       res.status(500);
       res.json({
-        error: `Post with ${id} not deleted`,
+        error: `Post with ${courseId} not deleted`,
+      });
+    });
+});
+
+//Delete a student
+
+app.delete("/students/:studentId", (req, res) => {
+  const { studentId } = req.params;
+  Student.findByIdAndDelete(studentId)
+    .then((student) => {
+      res.status(204);
+      res.json(student);
+      console.log(`Post with id: ${studentId} was deleted`);
+    })
+    .catch((error) => {
+      res.status(500);
+      res.json({
+        error: `Post with ${studentId} not deleted`,
       });
     });
 });

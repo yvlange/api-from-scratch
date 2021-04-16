@@ -6,7 +6,7 @@ const StudentSchema = new Schema(
   {
     firstName: String,
     lastName: String,
-    courseId: { type: ObjectId, ref: "Course" },
+    courseId: { type: ObjectId, ref: "Courses" },
   },
   {
     timestamps: true,
