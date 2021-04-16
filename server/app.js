@@ -23,6 +23,14 @@ app.get("/students", (req, res) => {
   });
 });
 
+app.get("/students/:id", (req, res) => {
+  const { id } = req.params;
+  Student.findById(id).then((students) => {
+    res.status(200);
+    res.json(students);
+  });
+});
+
 app.patch("/students/:id", (req, res) => {
   const { id } = req.params;
   Student.findByIdAndUpdate(id, req.body, { new: true }).then(
@@ -46,6 +54,61 @@ app.delete("/students/:id", (req, res) => {
     .then((student) => {
       res.status(204);
       res.json(student);
+      console.log(`Post with id: ${id} was deleted`);
+    })
+    .catch((error) => {
+      res.status(500);
+      res.json({
+        error: `Post with ${id} not deleted`,
+      });
+    });
+});
+
+app.post("/courses", (req, res) => {
+  Course.create(req.body).then((newCourse) => {
+    res.status(201);
+    res.json(newCourse);
+  });
+});
+
+app.get("/courses", (req, res) => {
+  Course.find().then((courses) => {
+    res.status(200);
+    res.json(courses);
+  });
+});
+
+app.get("/courses/:id", (req, res) => {
+  const { id } = req.params;
+  Course.findById(id).then((courses) => {
+    res.status(200);
+    res.json(courses);
+  });
+});
+
+app.patch("/courses/:id", (req, res) => {
+  const { id } = req.params;
+  Course.findByIdAndUpdate(id, req.body, { new: true }).then(
+    (updatedCourse) => {
+      if (updatedCourse) {
+        res.status(200);
+        res.json(updatedCourse);
+      } else {
+        res.status(400);
+        res.json({
+          error: `Post with ${id} not found`,
+        });
+      }
+    }
+  );
+});
+
+app.delete("/courses/:id", (req, res) => {
+  const { id } = req.params;
+  Course.findByIdAndDelete(id)
+    .then((course) => {
+      res.status(204);
+      res.json(course);
       console.log(`Post with id: ${id} was deleted`);
     })
     .catch((error) => {
