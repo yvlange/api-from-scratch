@@ -9,7 +9,21 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
+app.post("/students", (req, res) => {
+  Student.create(req.body).then((newStudent) => {
+    res.status(201);
+    res.json(newStudent);
+  });
+});
+
+app.get("/students", (req, res) => {
+  Student.find().then((students) => {
+    res.status(200);
+    res.json(students);
+  });
+});
+
+app.get("/students", (req, res) => {
   res.json({
     "/courses": "nothing yet",
   });

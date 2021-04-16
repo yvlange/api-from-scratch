@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 
 const StudentSchema = new Schema(
   {
-    id: id,
     firstName: String,
     lastName: String,
     course: Number,

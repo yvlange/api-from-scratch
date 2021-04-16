@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 
 const CourseSchema = new Schema(
   {
-    id: id,
     name: String,
     type: String,
     location: String,
@@ -14,4 +13,4 @@ const CourseSchema = new Schema(
     versionKey: false,
   }
 );
-module.exports = mongoose.model("Student", CourseSchema);
+module.exports = mongoose.model("Course", CourseSchema);
