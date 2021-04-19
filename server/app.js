@@ -190,7 +190,7 @@ app.delete("/students/:studentId", (req, res) => {
 // app.get("/students", (req, res) => {
 //   res.json({
 //     "/courses": "nothing yet",
-//   });
+//   })
 // });
 
 mongoose.connect("mongodb://localhost/bootcamp", {
